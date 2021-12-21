@@ -1,0 +1,25 @@
+<nav class="sidenav-collapse collapse" uib-collapse="app.sidebar.xs.isCollapsed">
+
+  <ul class="sidenav level-1" side-navigation ng-class="{'sidenav-collapsed': app.sidebar.isCollapsed}">
+
+    <li class="sidenav-heading">Menu</li>
+    
+    <li class="sidenav-item" ui-sref-active="active"> <a ui-sref="report.resume"> <span class="sidenav-icon icon icon-line-chart"></span> <span class="sidenav-label">Resumen</span> </a> </li>
+    
+    <li class="sidenav-item" ui-sref-active="active"> <a ui-sref="root.contacts"> <span class="sidenav-icon icon icon-users"></span> <span class="sidenav-label">Directorio</span> </a> </li>
+
+    
+    <li class="sidenav-item" ui-sref-active="active"> <a ui-sref="projects.list"> <span class="sidenav-icon icon icon-folder-open-o"></span> <span class="sidenav-label">Administrar Proyectos</span> </a> </li>
+    
+    <li class="sidenav-item" ui-sref-active="active"> <a ui-sref="projects.task"> <span class="sidenav-icon icon icon-tags"></span> <span class="sidenav-label">Asignación de Tareas</span> </a> </li>
+
+    
+    <li class="sidenav-heading">Admin</li>
+
+    <li class="sidenav-item" ui-sref-active="active"> <a ui-sref="admin.category"> <span class="sidenav-icon icon icon-cogs"></span> <span class="sidenav-label">Categorías</span> </a> </li>
+    
+    <li class="sidenav-item" ui-sref-active="active"> <a ui-sref="admin.users"> <span class="sidenav-icon icon icon-street-view"></span> <span class="sidenav-label">Usuarios</span> </a> </li>
+
+  </ul>
+
+</nav>

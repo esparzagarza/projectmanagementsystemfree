@@ -1,0 +1,192 @@
+<div class="layout-content-body">
+
+  <div class="title-bar">
+
+    <h1 class="title-bar-title"> <span class="d-ib">Categorias</span> <span class="d-ib"> <a class="title-bar-shortcut"
+          title="Add to shortcut list" data-container="body" data-toggle-text="Remove from shortcut list"
+          data-trigger="hover" data-placement="right" data-toggle="tooltip"> <span class="sr-only">Add to shortcut
+            list</span> </a> </span> </h1>
+
+    <p class="title-bar-description"> <small>Gestionar categorias, activar y suspender categorías.</small> </p>
+
+  </div>
+
+  <div class="card divTableList" ng-if="user.role == 'visitor'">
+
+    <div class="card-body">
+
+      <table class="table">
+
+        <thead>
+
+          <tr style="cursor: pointer;">
+
+            <th ng-click="reverse=!reverse; column='name'">Categoría</th>
+
+            <th ng-click="reverse=!reverse; column='parent'">Padre</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr style="cursor: pointer;" ng-repeat="data in alldata | orderBy:column:reverse | filter:busqueda"
+            ng-click="setcategorySel(data)">
+
+            <td> <img ng-src="{{ data.image }}" class="img-circle" width="36" height="36" /> &nbsp; {{ data.name }}
+            </td>
+
+            <td> <img ng-src="{{ data.parentimage }}" class="img-circle" width="36" height="36" /> &nbsp; {{ data.parent
+              }} </td>
+
+            <td>{{ data.sname }}</td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div class="row gutter-xs" ng-if="user.role != 'visitor'">
+
+    <div class="col-md-4">
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div class="input-group">
+
+            <input class="form-control" type="text" ng-model="busqueda" placeholder="Buscar &hellip;">
+
+            <div class="input-group-btn dropdown"><button class="btn btn-primary" type="button"
+                ng-click="categorySel={}"><i class="icon con-plus"></i> Nuevo</button></div>
+
+          </div>
+
+        </div>
+
+        <div class="card-body">
+
+          <form class="form" ng-submit=" saveCategory( categorySel )">
+
+            <div class="form-group text-center" ng-if="categorySel.id">
+
+              <img ng-src="{{ categorySel.image }}" width="100" class="img-circle">
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="control-label">Nombre</label>
+
+              <input type="text" class="form-control" value="categorySel.name" ng-model="categorySel.name" required />
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="control-label">Categoría padre</label>
+
+              <select class="form-control" ng-model="categorySel.categoryid" ng-init="categorySel.categoryid=1"
+                ng-options="value.id as value.name for (key, value) in alldata" required></select>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+
+                <div class="form-group text-center">
+
+                  <label for="file" class="btn btn-block btn-success"><i class="icon icon-upload icon-lg icon-fw"></i>
+
+                    Seleccionar foto<input type='file' id='file' name='file' style="display: none;"></label>
+
+                </div>
+
+              </div>
+
+              <div class="col-md-6"><button class="btn btn-block btn-primary" type="submit"><span
+                    class="icon icon-save"></span> Guardar</button></div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-8">
+
+      <div class="card divTableList">
+
+        <div class="card-body">
+
+          <table class="table">
+
+            <thead>
+
+              <tr style="cursor: pointer;">
+
+                <th ng-click="reverse=!reverse; column='name'">Categoría</th>
+
+                <th ng-click="reverse=!reverse; column='parent'">Padre</th>
+
+                <th ng-click="reverse=!reverse; column='status'" ng-if="user.role == 'admin'"></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr style="cursor: pointer;" ng-repeat="data in alldata | orderBy:column:reverse | filter:busqueda"
+                ng-click="setcategorySel(data)">
+
+                <td> <img ng-src="{{ data.image }}" class="img-circle" width="36" height="36" /> &nbsp; {{ data.name }}
+                </td>
+
+                <td> <img ng-src="{{ data.parentimage }}" class="img-circle" width="36" height="36" /> &nbsp; {{
+                  data.parent }} </td>
+
+                <td>{{ data.sname }}</td>
+
+                <td ng-if="user.role == 'admin'">
+
+                  <label class="switch switch-primary">
+
+                    <input class="switch-input" type="checkbox" ng-checked="data.status"
+                      ng-click="deleteCategory(data)">
+
+                    <span class="switch-track"></span>
+
+                    <span class="switch-thumb"></span>
+
+                  </label>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

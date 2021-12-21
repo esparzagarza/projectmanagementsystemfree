@@ -1,0 +1,561 @@
+<div class="contacts">
+
+  <div ng-class="{active: sidebar.isActive}" class="contacts-sidebar active">
+
+    <div class="contacts-sidebar-header">
+
+
+      <div class="form-group form-group-sm">
+
+        <span class="d-ib">{{ !currentType ? 'Todos' : currentType | capitalize }} {{ found }} </span>
+
+        <div class="input-with-icon">
+
+          <span class="icon icon-search input-icon"></span>
+
+          <input class="form-control" type="text" ng-model="busqueda" placeholder="Buscar &hellip;">
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="contacts-sidebar-body">
+
+      <div class="custom-scrollbar" custom-scrollbar>
+
+        <div class="contacts-list">
+
+          <div ng-repeat="(group, contacts) in groupedContacts">
+
+            <div class="contacts-list-divider" ng-hide="busqueda">
+
+              <div class="contacts-list-heading">{{ group }}</div>
+
+            </div>
+
+            <div ng-repeat="contact in contacts | filter:busqueda">
+
+              <div class="contacts-list-item">
+
+                <a class="contacts-list-link" ng-click="show(contact)" ng-class="{active: contact.isActive}">
+
+                  <div class="contacts-list-avatar"> <img class="rounded" width="40" height="40"
+                      ng-src="{{ contact.image }}"> </div>
+
+                  <div class="contacts-list-details">
+
+                    <h5 class="contacts-list-name"> <span class="truncate">{{ contact.fullname }}</span> </h5>
+
+                    <small class="contacts-list-email"> <span class="truncate">{{ contact.email }}</span> </small>
+
+                  </div>
+
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div ng-class="{active:!sidebar.isActive}" class="contacts-content">
+
+    <div ng-show="currentContact" class="contacts-content-header">
+
+      <div class="contacts-toolbar">
+
+        <div class="contacts-toolbar-tools pull-xs-left">
+
+          <div class="btn-group hidden-md hidden-lg">
+
+            <button class="btn btn-link link-muted" ng-click="setSidebarActive()" type="button"> <span
+                class="icon icon-caret-left icon-lg icon-fw"></span> Contacts </button>
+
+          </div>
+
+        </div>
+
+        <div class="contacts-toolbar-tools pull-sm-left">
+
+          <div class="btn-group">
+
+            <button class="btn btn-link link-muted" type="button" ng-click="currentContact=''"> <span
+                class="icon icon-star icon-lg icon-fw"></span> <span class="visible-lg-inline">Panel</span> </button>
+
+          </div>
+
+        </div>
+
+        <div class="contacts-toolbar-tools pull-xs-right">
+
+          <button class="btn btn-link link-muted" type="button" ng-click="deleteContact(currentContact)">
+
+            <span class="icon icon-trash icon-lg icon-fw"></span>
+
+            <span class="visible-lg-inline" ng-show="currentContact.status">Desactivar</span>
+
+            <span class="visible-lg-inline" ng-show="!currentContact.status">Activar</span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="contacts-form" ng-show="currentContact">
+
+      <div class="layout-content-body">
+
+        <div class="card" ng-show="!editForm">
+
+          <div class="card-header bg-success"> <strong>{{ currentContact.type | capitalize }}</strong> </div>
+
+          <div class="card-body">
+
+            <div class="row">
+
+              <div class="col-md-4">
+
+                <h2>General</h2>
+
+                <div class="form-group"> <label class="control-label">Nombre completo</label><br /> {{
+                  currentContact.fullname }} </div>
+
+                <div class="form-group"> <label class="control-label">Correo electrónico </label><br /> {{
+                  currentContact.email }} </div>
+
+                <div class="form-group"> <label class="control-label">Teléfono</label><br /> {{ currentContact.phone }}
+                </div>
+
+                <div class="form-group"> <label class="control-label">Sitio web</label><br /> {{ currentContact.website
+                  }} </div>
+
+                <div class="form-group"> <label class="control-label">Dirección completa</label><br /> {{
+                  currentContact.address }} </div>
+
+                <div class="form-group"> <label class="control-label">Nivel</label><br /> <span>{{ currentContact.level
+                    }}</span> </div>
+
+
+
+              </div>
+
+              <div class="col-md-4">
+
+                <h2>Fiscal</h2>
+
+                <div class="form-group"> <label class="control-label">Domicilio</label><br /> {{
+                  currentContact.fiscaladdress }} </div>
+
+                <div class="form-group"> <label class="control-label">RFC</label><br /> {{ currentContact.rfc }} </div>
+
+                <div class="form-group"> <label class="control-label">Razón Social</label><br /> {{
+                  currentContact.razonsocial }} </div>
+
+              </div>
+
+              <div class="col-md-4">
+
+                <div class="form-group"> <img class="img-rounded" width="100%" ng-src="{{ currentContact.image }}"> </div>
+
+                <button ng-show="user.role != 'visitor'" type="button" class="btn btn-primary"
+                  ng-click="editForm = true"><i class="icon icon-edit"></i> Edit</button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <form class="form" id="contactForm" ng-submit="saveContact( currentContact )" enctype="multipart/form-data"
+          ng-show="editForm">
+
+          <fieldset ng-disabled="!currentContact.status">
+
+            <div class="row">
+
+              <div class="col-md-6">
+
+                <h2>General</h2>
+
+                <div class="form-group">
+
+                  <label class="control-label" for="contactfullname">Nombre completo</label>
+
+                  <input class="form-control" id="contactfullname" type="text" ng-model="currentContact.fullname"
+                    required autofocus>
+
+                </div>
+
+                <div class="row">
+
+                  <div class="col-md-6">
+
+                    <div class="form-group">
+
+                      <label class="control-label">Correo electrónico </label>
+
+                      <input class="form-control" type="email" ng-model="currentContact.email">
+
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6">
+
+                    <div class="form-group">
+
+                      <label class="control-label">Teléfono</label>
+
+                      <input class="form-control" type="text" ui-mask="{{ phoneMask }}" ng-model="currentContact.phone">
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="form-group">
+
+                  <label class="control-label">Sitio web</label>
+
+                  <input class="form-control" type="text" ng-model="currentContact.website">
+
+                </div>
+
+                <div class="form-group">
+
+                  <label class="control-label">Dirección completa</label>
+
+                  <input class="form-control" type="text" ng-model="currentContact.address">
+
+                </div>
+
+                <div class="form-group">
+
+                  <label class="control-label">Tipo</label>
+
+                  <select class="form-control" ng-model="currentContact.type" required>
+
+                    <option value="cliente">Cliente</option>
+
+                    <option value="contacto">Contacto</option>
+
+                    <option value="proveedor">Proveedor</option>
+
+                    <option value="prospecto">Prospecto</option>
+
+                    <option value="empresa">Empresa</option>
+
+                  </select>
+
+                </div>
+
+                <div class="form-group">
+
+                  <label class="control-label">Nivel</label>
+
+                  <select class="form-control" ng-model="currentContact.level" required>
+
+                    <option ng-value="1">1</option>
+
+                    <option ng-value="2">2</option>
+
+                    <option ng-value="3">3</option>
+
+                    <option ng-value="4">4</option>
+
+                    <option ng-value="5">5</option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <h2>Fiscal</h2>
+
+                <div class="form-group">
+
+                  <label class="control-label">Domicilio</label>
+
+                  <textarea class="form-control" rows="3" ng-model="currentContact.fiscaladdress"></textarea>
+
+                </div>
+
+                <div class="form-group">
+
+                  <label class="control-label">RFC</label>
+
+                  <input class="form-control" type="text" ng-model="currentContact.rfc">
+
+                </div>
+
+                <div class="form-group">
+
+                  <label class="control-label">Razón Social</label>
+
+                  <input class="form-control" type="text" ng-model="currentContact.razonsocial">
+
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <div class="row">
+
+                  <div class="col-md-6">
+
+                    <div class="form-group"> <img class="img-rounded" width="100%" ng-src="{{ currentContact.image }}">
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6">
+
+                    <div class="form-group">
+
+                      <label for="file" class="btn btn-block btn-warning btn-block"> <i
+                          class="icon icon-upload icon-lg icon-fw"></i> Seleccionar foto <input type='file' id='file'
+                          name='file' style="display: none;"> </label>
+
+                      <button class="btn btn-primary btn-block" type="submit"> <span class="icon icon-save"></span>
+                        Guardar </button>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </fieldset>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <div class="contacts-settings-body" ng-hide="currentContact">
+
+      <div class="contacts-settings-inner">
+
+        <div class="row">
+
+          <div class="col-md-offset-3 col-md-6 col-md-offset-3">
+
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="media" style="cursor: pointer;">
+
+                  <div class="media-middle media-left" ng-click="getContacts(false)">
+
+                    <span class="bg-danger sq-64 circle"> <span class="icon icon-list"></span> </span>
+
+                  </div>
+
+                  <div class="media-middle media-body" ng-click="getContacts(false)">
+
+                    <h3 class="media-heading"> <span class="fw-l">Todos</span> </h3>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="media" style="cursor: pointer;">
+
+                  <div class="media-middle media-left" ng-click="getContacts('cliente')">
+
+                    <span class="bg-primary sq-64 circle"> <span class="icon icon-users"></span> </span>
+
+                  </div>
+
+                  <div class="media-middle media-body" ng-click="getContacts('cliente')">
+
+                    <h3 class="media-heading"> <span class="fw-l">{{ countperiodSales | number }} Clientes</span> </h3>
+
+                  </div>
+
+                  <div class="media-middle media-right">
+
+                    <button type="button" class="btn btn-primary" ng-click="showForm('cliente')"> <i
+                        class="icon icon-plus"></i> Nuevo </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="media" style="cursor: pointer;">
+
+                  <div class="media-middle media-left" ng-click="getContacts('contacto')">
+
+                    <span class="bg-warning sq-64 circle"> <span class="icon icon-list"></span> </span>
+
+                  </div>
+
+                  <div class="media-middle media-body" ng-click="getContacts('contacto')">
+
+                    <h3 class="media-heading"> <span class="fw-l">{{ countperiodContacts | number }} Contactos</span>
+                    </h3>
+
+                  </div>
+
+                  <div class="media-middle media-right">
+
+                    <button type="button" class="btn btn-warning" ng-click="showForm('contacto')"> <i
+                        class="icon icon-plus"></i> Nuevo </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="media" style="cursor: pointer;">
+
+                  <div class="media-middle media-left" ng-click="getContacts('prospecto')">
+
+                    <span class="bg-info sq-64 circle"> <span class="icon icon-star"></span> </span>
+
+                  </div>
+
+                  <div class="media-middle media-body" ng-click="getContacts('prospecto')">
+
+                    <h3 class="media-heading"> <span class="fw-l">{{ countperiodContacts | number }} Prospectos</span>
+                    </h3>
+
+                  </div>
+
+                  <div class="media-middle media-right">
+
+                    <button type="button" class="btn btn-warning" ng-click="showForm('prospecto')"> <i
+                        class="icon icon-plus"></i> Nuevo </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="media" style="cursor: pointer;">
+
+                  <div class="media-middle media-left" ng-click="getContacts('proveedor')">
+
+                    <span class="bg-info sq-64 circle"> <span class="icon icon-briefcase"></span> </span>
+
+                  </div>
+
+                  <div class="media-middle media-body" ng-click="getContacts('proveedor')">
+
+                    <h3 class="media-heading"> <span class="fw-l">{{ countperiodSales | number }} Proveedores</span>
+                    </h3>
+
+                  </div>
+
+                  <div class="media-middle media-right">
+
+                    <button type="button" class="btn btn-info" ng-click="showForm('proveedor')"> <i
+                        class="icon icon-plus"></i> Nuevo </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="media" style="cursor: pointer;">
+
+                  <div class="media-middle media-left" ng-click="getContacts('empresa')">
+
+                    <span class="bg-success sq-64 circle"> <span class="icon icon-industry"></span> </span>
+
+                  </div>
+
+                  <div class="media-middle media-body" ng-click="getContacts('empresa')">
+
+                    <h3 class="media-heading"> <span class="fw-l">{{ countperiodContacts | number }} Empresas</span>
+                    </h3>
+
+                  </div>
+
+                  <div class="media-middle media-right">
+
+                    <button type="button" class="btn btn-success" ng-click="showForm('empresa')"> <i
+                        class="icon icon-plus"></i> Nuevo </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

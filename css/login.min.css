@@ -1,0 +1,56 @@
+.login {
+  background-image: url(../img/bg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.login-page {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+.login-page .login {
+  display: table-cell;
+  vertical-align: middle;
+}
+.login-page .login-body {
+  -webkit-animation-duration: 1s;
+  -o-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  -o-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeInUp;
+  -o-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  text-align: center;
+  margin-left: 0%;
+  margin-right: auto;
+  max-width: 460px;
+  padding: 60px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+.login-page .login-brand {
+  display: block;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 140px;
+}
+
+.login-page .md-custom-controls {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.login-page .md-help-block.has-error {
+  color: #fbff00;
+}
+@media (min-width: 768px) {
+  .login-page .login-body {
+    -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    margin-top: 15px;
+    margin-left: 10%;
+  }
+}

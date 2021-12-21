@@ -1,0 +1,216 @@
+<div class="layout-content-body">
+
+  <div class="row gutter-xs">
+
+    <div class="col-md-3" style="cursor: pointer;" ui-sref="root.contacts">
+      <div class="card">
+
+        <div class="card-body">
+
+          <div class="media">
+
+            <div class="media-middle media-left">
+
+              <span class="bg-warning sq-64 circle">
+
+                <span class="icon icon-users"></span>
+
+              </span>
+
+            </div>
+
+            <div class="media-middle media-body">
+
+              <h3 class="media-heading"> <span class="fw-l">{{ countperiodContacts | number }} Directorio</span></h3>
+
+              <small>Total {{ countallContacts | number }} Directorio</small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-md-3" style="cursor: pointer;" ui-sref="projects.list">
+      <div class="card">
+
+        <div class="card-body">
+
+          <div class="media">
+
+            <div class="media-middle media-left">
+
+              <span class="bg-info sq-64 circle">
+
+                <span class="icon icon-cube"></span>
+
+              </span>
+
+            </div>
+
+            <div class="media-middle media-body">
+
+              <h3 class="media-heading"> <span class="fw-l">{{ countperiodProjects | number }} Proyectos</span></h3>
+
+              <small>Total {{ countallProjects | number }} proyectos</small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-md-3" style="cursor: pointer;" ui-sref="projects.task">
+      <div class="card">
+
+        <div class="card-body">
+
+          <div class="media">
+
+            <div class="media-middle media-left">
+
+              <span class="bg-success sq-64 circle">
+
+                <span class="icon icon-shopping-cart"></span>
+
+              </span>
+
+            </div>
+
+            <div class="media-middle media-body">
+
+              <h3 class="media-heading"> <span class="fw-l">{{ countperiodTask | number }} Tareas</span></h3>
+
+              <small>Total {{ countallTask | number }} tareas</small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-md-3" style="cursor: pointer;" ui-sref="admin.category">
+      <div class="card">
+
+        <div class="card-body">
+
+          <div class="media">
+
+            <div class="media-middle media-left">
+
+              <span class="bg-info sq-64 circle">
+
+                <span class="icon icon-cube"></span>
+
+              </span>
+
+            </div>
+
+            <div class="media-middle media-body">
+
+              <h3 class="media-heading"> <span class="fw-l">Categorías</span></h3>
+
+              <small>Total {{ CountallCategory | number }}</small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row gutter-xs text-center">
+
+    <div class="btn-group btn-group-sm dropdown">
+
+      <button class="mail-sort-btn btn btn-default dropdown-toggle" aria-haspopup="true" data-toggle="dropdown"
+        type="button"> Ultimos {{ defaultDays }} días <span class="caret"></span></button>
+
+      <ul class="dropdown-menu dropdown-menu-right">
+
+        <li ng-click="calculate(0)" class="btn btn-block">Hoy</li>
+
+        <li ng-click="calculate(1)" class="btn btn-block">Ayer</li>
+
+        <li ng-click="calculate(7)" class="btn btn-block">Ultimos 7 días</li>
+
+        <li ng-click="calculate(30)" class="btn btn-block">Ultimos 30 días</li>
+
+        <li ng-click="calculate(90)" class="btn btn-block">Ultimos 90 días</li>
+
+        <li ng-click="calculate(180)" class="btn btn-block">Ultimos 180 días</li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <div class="row gutter-xs">
+
+    <div class="col-md-6">
+
+      <div class="card">
+
+        <div class="card-body">
+
+          <h4 class="card-title">Actividad en Proyectos</h4>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="card-chart">
+
+            <canvas class="chart chart-line" chart-data='audienceOverview.data' chart-labels='audienceOverview.labels'
+              chart-colors='audienceOverview.colors' chart-options='audienceOverview.options' height="150"></canvas>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+      <div class="card">
+
+        <div class="card-body">
+
+          <h4 class="card-title">Actividad en Tareas</h4>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="card-chart">
+
+            <canvas class="chart chart-bar" chart-data='signups.data' chart-labels='signups.labels'
+              chart-colors='signups.colors' chart-options='signups.options' height="150"></canvas>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,227 @@
+<div class="layout-content-body">
+
+  <div class="card divTableList" ng-if="user.role == 'visitor'">
+
+    <div class="card-body">
+
+      <table class="table">
+
+        <thead>
+
+          <tr style="cursor: pointer;">
+
+            <th class="text-center">Img</th>
+
+            <th ng-click="reverse=!reverse; column='fullname'">Nombre</th>
+
+            <th ng-click="reverse=!reverse; column='email'">Correo</th>
+
+            <th style="width: 150px;" class="text-center" ng-click="reverse=!reverse; column='role'">Rol</th>
+
+            <th style="width: 150px;" class="text-center" ng-click="reverse=!reverse; column='lastlogin'">Ultimo acceso
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr style="cursor: pointer;" ng-if="alldata.length > 0"
+            ng-repeat="data in alldata | orderBy:column:reverse | filter:busqueda">
+
+            <td class="text-center"><img ng-src="{{ data.image }}" class="img-circle" width="36" height="36" /> </td>
+
+            <td>{{ data.fullname }}</td>
+
+            <td>{{ data.email }}</td>
+
+            <td class="text-center">{{ data.role }}</td>
+
+            <td class="text-center">{{ data.lastlogin | date }}</td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div class="row gutter-xs" ng-if="user.role != 'visitor'">
+
+    <div class="col-md-4">
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div class="input-group">
+
+            <input class="form-control" type="text" ng-model="busqueda" placeholder="Buscar &hellip;">
+
+            <div class="input-group-btn dropdown"><button class="btn btn-primary" type="button" ng-click="newForm()"><i
+                  class="icon con-plus"></i> Nuevo</button></div>
+
+          </div>
+
+        </div>
+
+        <div class="card-body">
+
+          <form class="form" ng-submit=" saveUser( userSel )">
+
+            <div class="form-group text-center" ng-if="userSel.id">
+
+              <img ng-src="{{ userSel.image }}" width="100" class="img-circle">
+
+              <h4>{{ userSel.role }}</h4>
+
+              <p>{{ userSel.email }}</p>
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="control-label">Nombre</label>
+
+              <input type="text" class="form-control" value="userSel.fullname" ng-model="userSel.fullname" required />
+
+            </div>
+
+            <div class="form-group" ng-if="!userSel.id">
+
+              <label class="control-label">Correo</label>
+
+              <input type="email" class="form-control" value="" ng-model="userSel.email" required />
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="control-label">Rol</label>
+
+              <select class="form-control" ng-model="userSel.role" required>
+
+                <option value="admin">Admin</option>
+
+                <option value="user">User</option>
+
+                <option value="visitor">Visit</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="control-label">Nueva contraseña</label>
+
+              <input type="password" minlength="6" class="form-control" placeholder="* * * * * * * * *"
+                ng-model="userSel.password" />
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+
+                <div class="form-group text-center">
+
+                  <label for="file" class="btn btn-block btn-success"><i class="icon icon-upload icon-lg icon-fw"></i>
+                    Seleccionar foto<input type='file' id='file' name='file' style="display: none;"></label>
+
+                </div>
+
+              </div>
+
+              <div class="col-md-6"><button class="btn btn-block btn-primary" type="submit"><span
+                    class="icon icon-save"></span> Guardar</button></div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-8">
+
+      <div class="card divTableList">
+
+        <div class="card-body">
+
+          <table class="table">
+
+            <thead>
+
+              <tr style="cursor: pointer;">
+
+                <th class="text-center">Img</th>
+
+                <th ng-click="reverse=!reverse; column='fullname'">Nombre</th>
+
+                <th ng-click="reverse=!reverse; column='email'">Correo</th>
+
+                <th style="width: 150px;" class="text-center" ng-click="reverse=!reverse; column='role'">Rol</th>
+
+                <th style="width: 150px;" class="text-center" ng-click="reverse=!reverse; column='lastlogin'">Ultimo
+                  acceso</th>
+
+                <th style="width: 150px;" class="text-center" ng-click="reverse=!reverse; column='status'"
+                  ng-if="user.role == 'admin'"></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr style="cursor: pointer;" ng-if="alldata.length > 0"
+                ng-repeat="data in alldata | orderBy:column:reverse | filter:busqueda" ng-click="setuserSel(data)">
+
+                <td class="text-center"><img ng-src="{{ data.image }}" class="img-circle" width="36" height="36" />
+                </td>
+
+                <td>{{ data.fullname }}</td>
+
+                <td>{{ data.email }}</td>
+
+                <td class="text-center">{{ data.role }}</td>
+
+                <td class="text-center">{{ data.lastlogin | date }}</td>
+
+                <td class="text-center" ng-if="user.role == 'admin'">
+
+                  <label class="switch switch-primary">
+
+                    <input class="switch-input" type="checkbox" ng-checked="data.status" ng-click="deleteUser(data)">
+
+                    <span class="switch-track"></span>
+
+                    <span class="switch-thumb"></span>
+
+                  </label>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

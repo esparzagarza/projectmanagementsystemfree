@@ -1,0 +1,10 @@
+<div class="layout-sidebar-backdrop"></div>
+
+<div class="layout-sidebar-body">
+
+  <div class="custom-scrollbar" ng-show="app.sidebar.isFixed" custom-scrollbar color="#fff" opacity=0.15
+    ng-include="'views/partials/sidebar-items.tpl.html'"> </div>
+
+</div>
+
+<div class="custom-scrollbar" ng-hide="app.sidebar.isFixed" ng-include="'views/partials/sidebar-items.tpl.html'"></div>

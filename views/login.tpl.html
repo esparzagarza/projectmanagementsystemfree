@@ -1,0 +1,43 @@
+<div class="login">
+
+  <div class="login-body">
+
+    <a class="login-brand"> <img class="img-responsive" src="img/logo.png"> </a>
+
+    <h3 class="login-heading">Project Management System<br /><small>{{ mensaje }}</small></h3>
+
+    <div class="login-form">
+
+      <form name="loginForm" class="login-form" novalidate ng-submit=" ingresar( datos )">
+
+        <div class="md-form-group md-label-floating">
+
+          <input ng-model="datos.email" class="md-form-control" type="email" name="email" spellcheck="false" autocomplete="off" placeholder="Correo electrónico" required>
+
+          <div ng-show="loginForm.$submitted || loginForm.email.$touched"> <small ng-show="loginForm.email.$error.required" class="has-error md-help-block">Favor de ingresar su correo.</small> </div>
+
+        </div>
+
+        <div class="md-form-group md-label-floating">
+
+          <input ng-model="datos.password" class="md-form-control" type="password" name="password" minlength="6" placeholder="Contraseña" required>
+
+          <div ng-show="loginForm.$submitted || loginForm.password.$touched">
+
+            <div ng-show="loginForm.password.$error.required" class="has-error md-help-block">Favor de ingresar su contraseña.</div>
+
+            <div ng-show="loginForm.password.$error.minlength" class="has-error md-help-block">Mínimo 6 caractéres. </div>
+
+          </div>
+
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

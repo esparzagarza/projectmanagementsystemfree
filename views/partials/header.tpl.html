@@ -1,0 +1,197 @@
+<div class="navbar navbar-default">
+
+  <div class="navbar-header">
+
+    <a class="navbar-brand navbar-brand-center" ui-sref="report.resume">{{ config.company }}</a>
+
+    <button class="navbar-toggler visible-xs-block collapsed" type="button"
+      ng-class="{collapsed: app.sidebar.xs.isCollapsed}" ng-click="app.sidebar.xs.toggle()">
+
+      <span class="sr-only">Toggle navigation</span>
+
+      <span class="bars">
+
+        <span class="bar-line bar-line-1 out"></span>
+
+        <span class="bar-line bar-line-2 out"></span>
+
+        <span class="bar-line bar-line-3 out"></span>
+
+      </span>
+
+      <span class="bars bars-x">
+
+        <span class="bar-line bar-line-4"></span>
+
+        <span class="bar-line bar-line-5"></span>
+
+      </span>
+
+    </button>
+
+    <button class="navbar-toggler visible-xs-block collapsed" type="button" data-toggle="collapse"
+      data-target="#navbar">
+
+      <span class="sr-only">Toggle navigation</span>
+
+      <span class="arrow-up"></span>
+
+      <span class="ellipsis ellipsis-vertical">
+
+        <img class="ellipsis-object" width="32" height="32" ng-src="{{ user.image }}">
+
+      </span>
+
+    </button>
+
+  </div>
+
+  <div class="navbar-toggleable">
+
+    <nav id="navbar" class="navbar-collapse collapse">
+
+      <button class="sidenav-toggler hidden-xs" type="button" ng-class="{collapsed: app.sidebar.isCollapsed}"
+        ng-click="app.sidebar.toggle()">
+
+        <span class="sr-only">Toggle navigation</span>
+
+        <span class="bars">
+
+          <span class="bar-line bar-line-1 out"></span>
+
+          <span class="bar-line bar-line-2 out"></span>
+
+          <span class="bar-line bar-line-3 out"></span>
+
+          <span class="bar-line bar-line-4 in"></span>
+
+          <span class="bar-line bar-line-5 in"></span>
+
+          <span class="bar-line bar-line-6 in"></span>
+
+        </span>
+
+      </button>
+
+      <ul class="nav navbar-nav navbar-right">
+
+        <li class="visible-xs-block">
+
+          <h4 class="navbar-text text-center">Hola, {{ user.fullname }}!</h4>
+
+        </li>
+
+        <li class="dropdown hidden-xs">
+
+          <button class="navbar-account-btn" data-toggle="dropdown" aria-haspopup="true"> <img class="img-circle"
+              width="36" height="36" ng-src="{{ user.image }}"> {{ user.fullname }} <span class="caret"></span>
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-right">
+
+            <li>
+
+              <a ui-sref="signup-1.step-two">
+
+                <h5 class="navbar-upgrade-heading"> {{ user.role | capitalize }} </h5>
+
+              </a>
+
+            </li>
+
+            <li class="divider"></li>
+
+            <li>
+
+              <a ui-sref="projects.list"><span class="icon icon-folder-open-o icon-lg icon-fw"></span> Proyectos</a>
+
+            </li>
+
+            <li>
+
+              <a ui-sref="projects.task"><span class="icon icon-tags icon-lg icon-fw"></span> Tareas</a>
+
+            </li>
+
+            <li>
+
+              <a ui-sref="root.contacts"><span class="icon icon-users icon-lg icon-fw"></span> Directorio</a>
+
+            </li>
+
+            <li class="divider"></li>
+
+            <li ui-sref-active="active">
+
+              <a ui-sref="login" ng-click="logout()">
+
+                <span class="icon icon-power-off icon-lg icon-fw"></span> Cerrar sesión
+
+              </a>
+
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="visible-xs-block">
+
+          <a ui-sref="projects.list"> <span class="icon icon-folder-open-o icon-lg icon-fw"></span> Proyectos </a>
+
+        </li>
+
+        <li class="visible-xs-block">
+
+          <a ui-sref="projects.task"> <span class="icon icon-tags icon-lg icon-fw"></span> Tareas </a>
+
+        </li>
+
+        <li class="visible-xs-block">
+
+          <a ui-sref="root.contacts"> <span class="icon icon-users icon-lg icon-fw"></span> Directorio </a>
+
+        </li>
+
+        <li class="visible-xs-block">
+
+          <a ui-sref="login" ng-click="logout()"> <span class="icon icon-power-off icon-lg icon-fw"></span> Cerrar
+
+            sesión </a>
+
+        </li>
+
+      </ul>
+
+      <div class="title-bar">
+
+        <h1 class="title-bar-title">
+
+          <span class="d-ib">{{ app.title }}</span>
+
+          <span class="d-ib">
+
+            <a class="title-bar-shortcut" href="#">
+
+              <span class="sr-only"></span>
+
+            </a>
+
+          </span>
+
+        </h1>
+
+        <p class="title-bar-description">
+
+          <small>Encuentra mas información y otros sistemas similares en el <a href="https://esparzagarza.mx"
+              target="_blank"> portfolio</a>.</small>
+
+        </p>
+
+      </div>
+
+    </nav>
+
+  </div>
+
+</div>

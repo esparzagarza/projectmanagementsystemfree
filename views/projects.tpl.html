@@ -1,0 +1,477 @@
+<div class="layout-content-body">
+
+	<div class="title-bar hidden-print">
+
+		<div class="title-bar-actions">
+
+			<button type="button" class="btn btn-primary" ng-click="resetprojectSel()"><i class="icon icon-plus"></i>
+				Nuevo</button>
+
+			<button ng-click="dt.dtInstance.changeData(dt.newSource); showPrint('info');" type="button"
+				class="btn btn-default"> <i class="icon icon-refresh"></i> Listado </button>
+
+		</div>
+
+		<h3> Gestionar proyecto, revisar avance, agregar archivos.</h3>
+
+	</div>
+
+	<div class="card divTableList hidden-print" ng-show="divPrint == 'info'">
+
+		<div class="card-body">
+
+			<table class="table table-condensed table-hover" style="cursor: pointer;" datatable=""
+				dt-options="dt.dtOptions" dt-columns="dt.dtColumns" dt-instance="dt.dtInstance" cellspacing="0"
+				width="100%"> </table>
+
+		</div>
+
+	</div>
+
+	<form class="form hidden-print" ng-submit="saveProject( projectSel )" ng-show="divPrint == 'newForm'">
+
+		<div class="row">
+
+			<div class="col-md-8">
+
+				<div class="card">
+
+					<div class="card-header bg-success" ng-if="projectSel.id"> <strong> Editar Proyecto | Folio: {{
+							projectSel.id }}</strong> </div>
+
+					<div class="card-header bg-info" ng-if="!projectSel.id"> <strong> {{ message }}</strong> </div>
+
+					<div class="card-body">
+
+						<div class="row">
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<label class="control-label">Nombre</label>
+
+									<input type="text" class="form-control" id="projectname" value="projectSel.name"
+										ng-model="projectSel.name" required />
+
+								</div>
+
+								<div class="form-group">
+
+									<label class="control-label">Responsable</label>
+
+									<select class="form-control" ng-model="projectSel.responsibleid"
+										ng-options="value.id as value.fullname for (key, value) in allusers"></select>
+
+								</div>
+
+							</div>
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<label class="form-label">Escriba el nombre del cliente (Min. 3 caracteres)</label>
+
+									<input type="text" ng-model="item" ng-keydown="complete(item)"
+										class="form-control" />
+
+								</div>
+
+								<ul class="list-group" style="max-height: 400px; overflow-y: scroll;"
+									ng-hide="selectedItem || !item">
+
+									<li class="list-group-item" ng-repeat="item in filterItem"
+										ng-click="fillTextbox(item)"> <img class="img-circle" width="48" height="48"
+											ng-src="{{ item.image }}" /> &nbsp; <strong>{{ item.fullname }}</strong> {{
+										item.email }} </li>
+
+								</ul>
+
+								<div class="form-group">
+
+									<ul class="media-list">
+
+										<li class="media" ng-show="selectedItem">
+
+											<div class="media-middle media-left"> <img class="img-circle" width="100"
+													height="100" ng-src="{{ selectedItem.image }}"> </div>
+
+											<div class="media-middle media-body">
+
+												<h5 class="media-heading"> <strong>{{ selectedItem.fullname
+														}}</strong><br />{{ selectedItem.email }}</h5>
+
+											</div>
+
+										</li>
+
+									</ul>
+
+								</div>
+
+							</div>
+
+
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<label class="control-label">Presupuesto Esperado</label>
+
+									<input type="text" class="form-control" ng-model="projectSel.estimatedbudget" />
+
+								</div>
+
+								<div class="form-group">
+
+									<label class="control-label">Duración estimada</label>
+
+									<input type="text" class="form-control" ng-model="projectSel.estimatedduration" />
+
+								</div>
+
+							</div>
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<label class="control-label">Descripción</label>
+
+									<textarea class="form-control" rows="8"
+										ng-model="projectSel.description"></textarea>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="card-footer text-center hidden-print">
+
+						<div class="pull-left">
+
+
+							<button type="button" class="btn btn-default" ng-click="showPrint('info');"><i
+									class="icon icon-close"></i>
+								Cerrar</button>
+
+							<button class="btn btn-primary" type="submit"><span class="icon icon-save"></span>
+								Guardar</button>
+
+						</div>
+						<div class="pull-right">
+
+							<label for="file" class="btn btn-success"><i class="icon icon-upload icon-lg icon-fw"></i>
+								Seleccionar Archivo<input type='file' id='file' name='file'
+									style="display: none;"></label>
+
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="col-md-4">
+
+				<div class="card divTableListQuad">
+
+					<div class="card-header bg-success" ng-if="projectSel.id"> <strong> Archivos</strong> </div>
+
+					<div class="card-header bg-info" ng-if="!projectSel.id"> <strong> Archivos</strong> </div>
+
+					<div class="card-body">
+
+						<div class="table-responsive divTableListHalf">
+
+							<table class="table">
+
+								<thead>
+
+									<tr style="cursor: pointer;">
+
+										<th ng-click="reverse=!reverse; column='title'">Nombre</th>
+
+										<th ng-click="reverse=!reverse; column='status'" style="width: 120px;"
+											class="text-center"></th>
+
+									</tr>
+
+								</thead>
+
+								<tbody>
+
+									<tr ng-repeat="file in allfiles" ng-show="file.projectid === projectSel.id">
+
+										<td>{{ file.title }}</td>
+
+										<td class="text-center">
+
+											<label class="switch switch-primary">
+
+												<input class="switch-input" type="checkbox" ng-checked="file.status"
+													ng-click="deleteFile(file)">
+
+												<span class="switch-track"></span>
+
+												<span class="switch-thumb"></span>
+
+											</label>
+
+										</td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</form>
+
+	<div ng-show="divPrint == 'print'">
+
+		<div class="row gutter-xs">
+
+			<div class="col-md-6">
+
+				<div class="card divTableListQuad">
+
+					<div class="card-header bg-success"> <strong>Detalles</strong> </div>
+
+					<div class="card-body">
+
+						<div class="row">
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+									<label class="control-label">Nombre: </label>
+									<p> {{ projectSel.name }} </p>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label">Valor estimada: </label>
+									<p>{{ projectSel.estimatedbudget }}</p>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label">Duración estimada: </label>
+									<p>{{ projectSel.estimatedduration }}</p>
+								</div>
+
+							</div>
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<label class="form-label">Responsable: </label>
+
+									<ul class="media-list">
+
+										<li class="media">
+
+											<div class="media-middle media-left"> <img class="img-circle" width="48"
+													height="48" ng-src="{{ projectSel.uimage }}"> </div>
+
+											<div class="media-middle media-body">
+
+												<h5 class="media-heading"> <a>{{ projectSel.ufullname }}</a> </h5>
+												<small>{{ projectSel.uemail }}</small>
+
+											</div>
+
+										</li>
+
+									</ul>
+
+								</div>
+
+								<div class="form-group">
+
+									<label class="form-label">Cliente: </label>
+
+									<ul class="media-list">
+
+										<li class="media">
+
+											<div class="media-middle media-left"> <img class="img-circle" width="48"
+													height="48" ng-src="{{ projectSel.eimage }}"> </div>
+
+											<div class="media-middle media-body">
+
+												<h5 class="media-heading"> <a>{{ projectSel.efullname }}</a> </h5>
+												<small>{{ projectSel.eemail }}</small>
+
+											</div>
+
+										</li>
+
+									</ul>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="form-group"> <label class="control-label">Descripción: </label> {{
+							projectSel.description }} </div>
+
+					</div>
+
+					<div class="card-footer text-center hidden-print">
+
+						<button type="button" class="btn btn-primary" ng-click="showPrint('newForm');"><i
+								class="icon icon-edit"></i> Edit</button>
+
+						<a class="btn btn-success" href="javascript:window.print()"> <span
+								class="icon icon-print icon-lg icon-fw"></span> Imprimir </a>
+
+						<button type="button" class="btn btn-default" ng-click="showPrint('info');"><i
+								class="icon icon-close"></i> Cerrar</button>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="col-md-6">
+
+				<div class="card divTableListQuad">
+
+					<div class="card-header bg-default"> <strong>Archivos</strong> </div>
+
+					<div class="card-body">
+
+						<div class="table-responsive">
+
+							<table class="table">
+
+								<thead>
+
+									<tr style="cursor: pointer;">
+
+										<th>Nombre</th>
+
+									</tr>
+
+								</thead>
+
+								<tbody>
+
+									<tr ng-repeat="file in allfiles" ng-show="file.projectid === projectSel.id"
+										ng-if="file.status">
+
+										<td>{{ file.title }}</td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="row gutter-xs">
+
+			<div class="card divTableListQuad">
+
+				<div class="card-header bg-primary"> <strong>Tareas vinculadas</strong> </div>
+
+				<div class="card-body">
+
+					<table class="table">
+
+						<thead>
+
+							<tr style="cursor: pointer;">
+
+								<th class="text-center" ng-click="reverse=!reverse; column='id'">Folio</th>
+
+								<th class="text-center" ng-click="reverse=!reverse; column='type'">Tipo</th>
+
+								<th ng-click="reverse=!reverse; column='enteid'">Cliente</th>
+
+								<th class="text-center" ng-click="reverse=!reverse; column='duedate'">Fecha</th>
+
+								<th class="text-center" ng-click="reverse=!reverse; column='prio'">Prioridad</th>
+
+								<th class="text-center" ng-click="reverse=!reverse; column='categoryid'">Categoría</th>
+
+								<th ng-click="reverse=!reverse; column='userid'">Responsable</th>
+
+								<th style="width: 100px;" class="text-center"
+									ng-click="reverse=!reverse; column='status'">Estatus</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody>
+
+							<tr style="cursor: pointer;" ng-repeat="data in alltask">
+
+								<td class="text-center">{{ data.id }}</td>
+
+								<td class="text-center">{{ data.type | capitalize }}</td>
+
+								<td><img ng-src="{{ data.eimage }}" class="img-circle" width="36" height="36" /> {{
+									data.efullname }} </td>
+
+								<td class="text-center">{{ data.duedate }}</td>
+
+								<td class="text-center">{{ data.prio | capitalize }}</td>
+
+								<td class="text-center">{{ data.cname }}</td>
+
+								<td><img ng-src="{{ data.eimage }}" class="img-circle" width="36" height="36" /> {{
+									data.ufullname }} </td>
+
+								<td class="text-center">{{ data.status | capitalize }}</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+</div>

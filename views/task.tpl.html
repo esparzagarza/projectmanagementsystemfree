@@ -1,0 +1,348 @@
+<div class="layout-content-body">
+
+  <div class="title-bar hidden-print">
+
+    <div class="title-bar-actions">
+
+      <button type="button" class="btn btn-primary" ng-click="resetparams()"><i class="icon icon-plus"></i>
+        Nueva</button>
+
+      <button ng-click="dt.dtInstance.changeData(dt.newSource); showPrint('info');" type="button"
+        class="btn btn-default"> <i class="icon icon-refresh"></i> Actualizar listado </button>
+
+    </div>
+
+    <h1 class="title-bar-title">
+
+      <span class="d-ib">Tareas</span>
+
+      <span class="d-ib"> <a class="title-bar-shortcut" title="Add to shortcut list" data-container="body"
+          data-toggle-text="Remove from shortcut list" data-trigger="hover" data-placement="right"
+          data-toggle="tooltip"> <span class="sr-only">Add to shortcut list</span> </a> </span>
+
+    </h1>
+
+    <p class="title-bar-description"> <small>Gestionar tareas, revisar horarios, editar.</small> </p>
+
+  </div>
+
+  <div class="card divTableList hidden-print" ng-show="divPrint == 'info'">
+
+    <div class="card-body">
+
+      <table class="table table-condensed table-hover" style="cursor: pointer;" datatable="" dt-options="dt.dtOptions"
+        dt-columns="dt.dtColumns" dt-instance="dt.dtInstance" cellspacing="0" width="100%"> </table>
+
+    </div>
+
+  </div>
+
+  <div class="card" ng-show="divPrint == 'newForm'">
+
+    <div class="card-header bg-success" ng-if="taskSel.id"> <strong> Editar: {{ taskSel.type | uppercase }} | Folio: {{
+        taskSel.id }}</strong> </div>
+
+    <div class="card-header bg-info" ng-if="!taskSel.id"> <strong> {{ message }}</strong> </div>
+
+    <div class="card-body">
+
+      <form class="form" ng-submit="saveTask( taskSel )">
+
+        <div class="row">
+
+          <div class="col-md-4">
+
+            <div class="form-group">
+
+              <label class="control-label">Tipo</label>
+
+              <select class="form-control" ng-model="taskSel.type">
+
+                <option value="actividad">Actividad</option>
+                <option value="cita">Cita</option>
+                <option value="llamada">Llamada</option>
+                <option value="demo">Demo</option>
+                <option value="correo">Correo</option>
+                <option value="evento">Evento</option>
+                <option value="reunion">Reunion</option>
+                <option value="levantamiento">Levantamiento</option>
+                <option value="tarea">Tarea</option>
+                <option value="visita">Visita</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="control-label">Prioridad</label>
+
+              <select class="form-control" ng-model="taskSel.prio">
+                <option value="estricto">Estricto</option>
+                <option value="importante">Importante</option>
+                <option value="alta">Alta</option>
+                <option value="media">Media</option>
+                <option value="baja">Baja</option>
+                <option value="espera">Espera</option>
+              </select>
+
+            </div>
+
+            <div class="form-group"> <label class="control-label">Proyecto</label> <select class="form-control"
+                ng-model="taskSel.projectid"
+                ng-options="value.id as value.name for (key, value) in allprojects"></select> </div>
+
+            <div class="form-group"> <label class="control-label">Categoría</label> <select class="form-control"
+                ng-model="taskSel.categoryid"
+                ng-options="value.id as value.name for (key, value) in allcategories"></select> </div>
+
+            <div class="form-group"> <label class="control-label">Responsable</label> <select class="form-control"
+                ng-model="taskSel.userid" ng-options="value.id as value.fullname for (key, value) in allusers"></select>
+            </div>
+
+            <div class="form-group" ng-if="taskSel.id">
+
+              <label class="control-label">Estatus</label>
+
+              <select class="form-control" ng-model="taskSel.status">
+
+                <option value="creada">Creada</option>
+
+                <option value="atendiendo"><a>Atendiendo</option>
+
+                <option value="en camino"><a>En camino</option>
+
+                <option value="demora">Demora</option>
+
+                <option value="finalizada"><a>Finalizada</option>
+
+                <option value="cancelada"><a>Cancelada</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+          <div class="col-md-4">
+
+            <div class="form-group">
+
+              <label class="control-label">Fecha</label>
+
+              <div class="input-with-icon">
+
+                <input type="text" class="form-control" maxlength="10" ng-model="taskSel.duedatedate" required>
+
+                <span class="icon icon-calendar input-icon"></span>
+
+              </div>
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="control-label">Horario</label>
+
+              <table>
+
+                <tr>
+
+                  <td><input class="form-control text-center" type="text" ui-mask="{{ timeMask }}"
+                      ng-model="taskSel.duedatehour" required></td>
+
+                  <td style="vertical-align: middle;"> &nbsp; : &nbsp; </td>
+
+                  <td><input class="form-control text-center" type="text" ui-mask="{{ timeMask }}"
+                      ng-model="taskSel.duedatemin"></td>
+
+                </tr>
+
+              </table>
+
+            </div>
+
+            <div class="form-group"> <label class="control-label">Descripción</label> <textarea class="form-control"
+                rows="4" ng-model="taskSel.description"></textarea> </div>
+
+          </div>
+
+          <div class="col-md-4">
+
+            <div class="form-group">
+
+              <label class="form-label">Escriba el nombre del cliente (Min. 3 caracteres)</label>
+
+              <input type="text" ng-model="item" ng-keydown="complete(item)" class="form-control" />
+
+            </div>
+
+            <ul class="list-group" style="max-height: 400px; overflow-y: scroll;" ng-hide="selectedItem || !item">
+
+              <li class="list-group-item" ng-repeat="item in filterItem" ng-click="fillTextbox(item)"> <img
+                  class="img-circle" width="48" height="48" ng-src="{{ item.image }}" /> &nbsp; <strong>{{ item.fullname
+                  }}</strong> {{ item.email }} </li>
+
+            </ul>
+
+            <div class="form-group">
+
+              <ul class="media-list">
+
+                <li class="media" ng-show="selectedItem">
+
+                  <div class="media-middle media-left"> <img class="img-circle" width="100" height="100"
+                      ng-src="{{ selectedItem.image }}"> </div>
+
+                  <div class="media-middle media-body">
+
+                    <h5 class="media-heading"> <strong>{{ selectedItem.fullname }}</strong><br />{{ selectedItem.email
+                      }}</h5>
+
+                  </div>
+
+                </li>
+
+              </ul>
+
+            </div>
+
+            <div class="form-group">
+
+              <button type="button" class="btn btn-default" ng-click="showPrint('info');"><i
+                  class="icon icon-close"></i> Cancelar</button>
+
+              <button class="btn btn-primary" type="submit"><span class="icon icon-save"></span> Guardar</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+
+  <div ng-show="divPrint == 'print'">
+
+    <div class="card">
+
+      <div class="card-header bg-success"> <strong>Detalles</strong> </div>
+
+      <div class="card-body">
+
+        <div class="row">
+
+          <div class="col-md-6">
+
+            <div class="form-group"> <label class="control-label">Folio: </label> {{ taskSel.id }} </div>
+
+            <div class="form-group"> <label class="control-label">Tipo: </label> {{ taskSel.type | capitalize }} </div>
+
+            <div class="form-group"> <label class="control-label">Inicia: </label> {{ taskSel.duedate }} </div>
+
+            <div class="form-group"> <label class="control-label">Prioridad: </label> {{ taskSel.prio | capitalize }}
+            </div>
+
+            <div class="form-group"> <label class="control-label">Proyecto: </label> {{ taskSel.pname }} </div>
+
+            <div class="form-group"> <label class="control-label">Categoría: </label> {{ taskSel.cname | capitalize }}
+            </div>
+
+            <div class="form-group"> <label class="control-label">Etatus: </label> {{ taskSel.status | capitalize }}
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+
+            <div class="form-group"> <label class="control-label">Descripción: </label><br />{{ taskSel.description }}
+            </div>
+
+            <div class="form-group">
+
+              <label class="form-label">Nombre del cliente: </label>
+
+              <ul class="media-list">
+
+                <li class="media">
+
+                  <div class="media-middle media-left"> <img class="img-circle" width="48" height="48"
+                      ng-src="{{ taskSel.eimage }}"> </div>
+
+                  <div class="media-middle media-body">
+
+                    <h5 class="media-heading"> <a>{{ taskSel.efullname }}</a> </h5> <small>{{ taskSel.eemail }}</small>
+
+                  </div>
+
+                </li>
+
+              </ul>
+
+            </div>
+
+            <div class="form-group">
+
+              <label class="form-label">Responsable: </label>
+
+              <ul class="media-list">
+
+                <li class="media">
+
+                  <div class="media-middle media-left"> <img class="img-circle" width="48" height="48"
+                      ng-src="{{ taskSel.uimage }}"> </div>
+
+                  <div class="media-middle media-body">
+
+                    <h5 class="media-heading"> <a>{{ taskSel.ufullname }}</a> </h5> <small>{{ taskSel.uemail }}</small>
+
+                  </div>
+
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row hidden-print">
+
+      <div class="col-sm-12">
+
+        <div class="text-center">
+
+          <div class="p-y-lg">
+
+            <button type="button" class="btn btn-primary" ng-click="showPrint('newForm');"><i
+                class="icon icon-edit"></i> Edit</button>
+
+            <a class="btn btn-success" href="javascript:window.print()"> <span
+                class="icon icon-print icon-lg icon-fw"></span> Imprimir </a>
+
+            <button type="button" class="btn btn-default" ng-click="showPrint('info');"><i class="icon icon-close"></i>
+              Cerrar</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
